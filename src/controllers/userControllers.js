@@ -1,5 +1,4 @@
 const database = require("../../database");
-afterAll(() => database.end());
 
 const getUsers = (req, res) => {
   database
