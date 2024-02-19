@@ -39,7 +39,7 @@ const postMovie = (req, res) => {
       [title, director, year, color, duration]
     )
     .then(([result]) => {
-      res.status(201).send({id: result.insertId});
+      res.status(201).send({ id: result.insertId });
     })
     .catch((err) => {
       console.error(err);
@@ -64,11 +64,9 @@ const updateMovie = (req, res) => {
       }
     })
     .catch((err) => {
-      console.error(err);
       res.sendStatus(500);
     });
 };
-
 
 module.exports = {
   getMovies,
