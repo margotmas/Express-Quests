@@ -4,30 +4,28 @@ const getUsers = (req, res) => {
   database
     .query("select * from users")
     .then(([users]) => {
-      res.json(users);
+      res.status(200).json(users);
     })
     .catch((err) => {
       console.error(err);
-      res.sendStatus(500);
+      res.sendStatus(422);
     });
 };
 
 const getUsersById = (req, res) => {
   const id = parseInt(req.params.id);
 
-  database
-    .query("select * from users where id = ?", [id])
-    .then(([users]) => {
-      if (users[0] != null) {
-        res.json(users[0]);
-      } else {
-        res.sendStatus(404);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
+  database.query("select * from users where id = ?", [id]).then(([users]) => {
+    if (users[0] != null) {
+      res.status(200).json(users[0]);
+    } else {
+      res.status(404).send("Sorry bro, not found !");
+    }
+  });
+  // .catch((err) => {
+  //   console.error(err);
+  //   res.sendStatus(422);
+  // });
 };
 
 const postUser = (req, res) => {
@@ -43,7 +41,7 @@ const postUser = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.sendStatus(500);
+      res.sendStatus(422);
     });
 };
 
@@ -64,8 +62,7 @@ const updateUser = (req, res) => {
       }
     })
     .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
+      res.sendStatus(422);
     });
 };
 

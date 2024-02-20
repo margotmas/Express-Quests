@@ -74,7 +74,7 @@ describe("POST /api/movies", () => {
 
       .send(movieWithMissingProps);
 
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(422);
   });
 });
 describe("PUT /api/movies/:id", () => {
@@ -107,19 +107,14 @@ describe("PUT /api/movies/:id", () => {
 
     const updatedMovie = {
       title: "Wild is life",
-
       director: "Alan Smithee",
-
       year: "2023",
-
       color: "0",
-
       duration: 120,
     };
 
     const response = await request(app)
       .put(`/api/movies/${id}`)
-
       .send(updatedMovie);
 
     expect(response.status).toEqual(204);
@@ -162,19 +157,15 @@ describe("PUT /api/movies/:id", () => {
 
       .send(movieWithMissingProps);
 
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(422);
   });
 
   it("should return no movie", async () => {
     const newMovie = {
       title: "Avatar",
-
       director: "James Cameron",
-
       year: "2009",
-
       color: "1",
-
       duration: 162,
     };
 

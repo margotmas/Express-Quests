@@ -74,13 +74,13 @@ describe("POST /api/users", () => {
   });
 
   it("should return an error", async () => {
-    const userWithMissingProps = { firstname: "Harry" };
+    const userWithMissingProps = { firstname: "Hermione" };
 
     const response = await request(app)
       .post("/api/users")
       .send(userWithMissingProps);
 
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(422);
   });
 });
 
@@ -110,7 +110,7 @@ describe("PUT /api/users/:id", () => {
     const updatedUser = {
       firstname: "Bradley",
       lastname: "Cooper",
-      email: `${crypto.randomUUID()}@example`,
+      email: `${crypto.randomUUID()}@example.com`,
       city: "Loos",
       language: "English",
     };
@@ -150,14 +150,14 @@ describe("PUT /api/users/:id", () => {
       .put(`/api/users/1`)
       .send(userWithMissingProps);
 
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(422);
   });
 
   it("should return no user", async () => {
     const newUser = {
       firstname: "Johnny",
       lastname: "Depp",
-      email: `{crypto.randomUUID()}@example.com`,
+      email: `${crypto.randomUUID()}@example.com`,
       city: "Loos",
       language: "English",
     };
