@@ -2,6 +2,7 @@ const request = require("supertest");
 
 const app = require("../src/app");
 const database = require("../database");
+const { deleteMovie } = require("../src/controllers/movieControllers");
 
 afterAll(() => database.end());
 
@@ -35,13 +36,9 @@ describe("POST /api/movies", () => {
   it("should return created movie", async () => {
     const newMovie = {
       title: "Star Wars",
-
       director: "George Lucas",
-
       year: "1977",
-
       color: "1",
-
       duration: 120,
     };
 
@@ -77,6 +74,7 @@ describe("POST /api/movies", () => {
     expect(response.status).toEqual(422);
   });
 });
+
 describe("PUT /api/movies/:id", () => {
   it("should edit movie", async () => {
     const newMovie = {
@@ -171,6 +169,35 @@ describe("PUT /api/movies/:id", () => {
 
     const response = await request(app).put("/api/movies/0").send(newMovie);
 
+    expect(response.status).toEqual(404);
+  });
+});
+
+describe("DELETE /api/movies/:id", () => {
+  it("should delete a movie", async () => {
+    const newMovie = {
+      title: "Test Movie",
+      director: "Test Director",
+      year: "2024",
+      color: "1",
+      duration: 120,
+    };
+
+    const response = await request(app).post("/api/movies").send(newMovie);
+    const id = response.body.id;
+    const deleteReponse = await request(app).delete(`/api/movies/${id}`);
+
+    expect(deleteReponse.status).toEqual(204);
+
+    const [movies] = await database.query(
+      "SELECT * FROM movies WHERE id=?",
+      id
+    );
+    expect(typeof response.body.id).toBe("number");
+  });
+
+  it("should return an error 404", async () => {
+    const response = await request(app).delete("/api/movies/0");
     expect(response.status).toEqual(404);
   });
 });
